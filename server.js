@@ -36,6 +36,7 @@ async function insertSession(userId, sessionId, duration) {
     "INSERT INTO sessions(userId, sessionId, duration) VALUES($1, $2, $3)",
     [userId, sessionId, duration]
   );
+  console.log("Session insérée dans la base de données");
 }
 
 app.post("/session", (req, res) => {
