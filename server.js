@@ -44,9 +44,12 @@ async function insertSession(userId, sessionId, duration) {
 app.post("/session", (req, res) => {
   const { userId, sessionId, duration } = req.body;
   insertSession(userId, sessionId, duration);
-  console.log("Session reçue :", req.body);
+  console.log("Session reçue :", JSON.stringify(req.body));
   res.sendStatus(200);
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Serveur en écoute sur le port ${port}`));
+const PORT = process.env.PORT || 10000;
+const HOST = "0.0.0.0";
+app.listen(PORT, HOST, () =>
+  console.log(`Serveur en écoute sur le port ${PORT}`)
+);
