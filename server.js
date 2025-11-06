@@ -3,7 +3,7 @@ const app = express();
 app.use(express.json());
 
 app.post("/session", (req, res) => {
-  console.log("Session reçue :", req.body);
+  console.log("Session reçue :", JSON.stringify(req.body));
   res.sendStatus(200);
 });
 
