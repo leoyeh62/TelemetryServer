@@ -47,6 +47,18 @@ app.post("/session", (req, res) => {
   res.sendStatus(200);
 });
 
+app.get("/leaderboard", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM users_time ORDER BY total_duration DESC"
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur serveur");
+  }
+});
+
 const PORT = process.env.PORT || 10000;
 const HOST = "0.0.0.0";
 app.listen(PORT, HOST, () =>
