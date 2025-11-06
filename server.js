@@ -22,7 +22,7 @@ async function setupDB() {
     );
   `);
   await pool.query(`
-    CREATE VIEW IF NOT EXISTS users_time AS
+    CREATE OR REPLACE VIEW users_time AS
     SELECT userId, SUM(duration) AS total_duration
     FROM sessions
     GROUP BY userId
