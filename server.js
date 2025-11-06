@@ -1,8 +1,49 @@
 import express from "express";
+import pg from "pg";
+
 const app = express();
+const DATABASE_URL =
+  process.env.DATABASE_URL ||
+  "postgresql://usersdb_a7k7_user:lnxiSD3157xKO3kLwCOK3neB4u2cRksi@dpg-d46ad90dl3ps738tcju0-a.frankfurt-postgres.render.com/usersdb_a7k7";
 app.use(express.json());
 
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+async function setupDB() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS sessions (
+      id SERIAL PRIMARY KEY,
+      userId VARCHAR(255) NOT NULL,
+      sessionId VARCHAR(255) NOT NULL,
+      duration INT NOT NULL,
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+  `);
+  await pool.query(`
+    CREATE VIEW IF NOT EXISTS users_time AS
+    SELECT userId, SUM(duration) AS total_duration
+    FROM sessions
+    GROUP BY userId
+  `);
+}
+setupDB();
+
+async function insertSession(userId, sessionId, duration) {
+  if (duration < 60) return;
+  await pool.query(
+    "INSERT INTO sessions(user_id, session_id, duration) VALUES($1, $2, $3)",
+    [userId, sessionId, duration]
+  );
+}
+
 app.post("/session", (req, res) => {
+  const { userId, sessionId, duration } = req.body;
+  insertSession(userId, sessionId, duration);
   console.log("Session reçue :", req.body);
   res.sendStatus(200);
 });
