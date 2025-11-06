@@ -7,5 +7,6 @@ app.post("/session", (req, res) => {
   res.sendStatus(200);
 });
 
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
+const HOST = '0.0.0.0';
 app.listen(port, () => console.log(`Serveur en écoute sur le port ${port}`));
