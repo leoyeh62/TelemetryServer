@@ -2,9 +2,6 @@ import express from "express";
 import pg from "pg";
 
 const app = express();
-const DATABASE_URL =
-  process.env.DATABASE_URL ||
-  "postgresql://usersdb_a7k7_user:lnxiSD3157xKO3kLwCOK3neB4u2cRksi@dpg-d46ad90dl3ps738tcju0-a.frankfurt-postgres.render.com/usersdb_a7k7";
 app.use(express.json());
 
 const pool = new pg.Pool({
