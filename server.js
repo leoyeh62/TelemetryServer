@@ -33,7 +33,7 @@ setupDB();
 async function insertSession(userId, sessionId, duration) {
   if (duration < 60) return;
   await pool.query(
-    "INSERT INTO sessions(user_id, session_id, duration) VALUES($1, $2, $3)",
+    "INSERT INTO sessions(userId, sessionId, duration) VALUES($1, $2, $3)",
     [userId, sessionId, duration]
   );
 }
